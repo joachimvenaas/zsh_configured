@@ -19,16 +19,6 @@ backup() {
 
 backup
 
-# -------------------------------
-# Copy configs
-# -------------------------------
-TMPDIR=$(mktemp -d)
-curl -fsSL -o "$TMPDIR/zshrc" https://raw.githubusercontent.com/joachimvenaas/zsh_configured/main/zsh/zshrc
-curl -fsSL -o "$TMPDIR/p10k.zsh" https://raw.githubusercontent.com/joachimvenaas/zsh_configured/main/zsh/p10k.zsh
-cp "$TMPDIR/zshrc" ~/.zshrc
-cp "$TMPDIR/p10k.zsh" ~/.p10k.zsh
-rm -rf "$TMPDIR"
-
 # Check if sudo exists, install if not
 if ! command -v sudo >/dev/null 2>&1; then
   echo "sudo not found, installing..."
@@ -57,6 +47,16 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
   echo "Installing Oh My Zsh..."
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
+
+# -------------------------------
+# Copy configs (after Oh My Zsh to avoid overwrite)
+# -------------------------------
+TMPDIR=$(mktemp -d)
+curl -fsSL -o "$TMPDIR/zshrc" https://raw.githubusercontent.com/joachimvenaas/zsh_configured/main/zsh/zshrc
+curl -fsSL -o "$TMPDIR/p10k.zsh" https://raw.githubusercontent.com/joachimvenaas/zsh_configured/main/zsh/p10k.zsh
+cp "$TMPDIR/zshrc" ~/.zshrc
+cp "$TMPDIR/p10k.zsh" ~/.p10k.zsh
+rm -rf "$TMPDIR"
 
 # -------------------------------
 # Install Powerlevel10k theme
