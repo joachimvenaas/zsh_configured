@@ -91,4 +91,5 @@ if [ "$SHELL" != "$(which zsh)" ]; then
     chsh -s "$(which zsh)"
 fi
 
-echo "Installation complete. Start a new terminal session or run 'zsh' to begin."
+echo "Done"
+source ~/.zshrc
