@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Install by using
+# sh -c "$(curl -fsSL https://raw.githubusercontent.com/joachimvenaas/zsh_configured/main/install.sh)"
+#
 
 # -------------------------------
 # Backup existing configs
@@ -20,9 +22,12 @@ backup
 # -------------------------------
 # Copy configs
 # -------------------------------
-cp $DOTFILES_DIR/zsh/zshrc ~/.zshrc
-cp $DOTFILES_DIR/zsh/p10k.zsh ~/.p10k.zsh
-echo "Configs copied"
+TMPDIR=$(mktemp -d)
+curl -fsSL -o "$TMPDIR/zshrc" https://raw.githubusercontent.com/joachimvenaas/zsh_configured/main/zsh/zshrc
+curl -fsSL -o "$TMPDIR/p10k.zsh" https://raw.githubusercontent.com/joachimvenaas/zsh_configured/main/zsh/p10k.zsh
+cp "$TMPDIR/zshrc" ~/.zshrc
+cp "$TMPDIR/p10k.zsh" ~/.p10k.zsh
+rm -rf "$TMPDIR"
 
 # -------------------------------
 # Install dependencies
