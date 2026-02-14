@@ -2,7 +2,7 @@
 set -e
 
 # Install by using
-# sh -c "$(curl -fsSL https://raw.githubusercontent.com/joachimvenaas/zsh_configured/main/install.sh)"
+# bash -c "$(curl -fsSL https://raw.githubusercontent.com/joachimvenaas/zsh_configured/main/install.sh)"
 #
 
 # -------------------------------
@@ -91,5 +91,11 @@ if [ "$SHELL" != "$(which zsh)" ]; then
     chsh -s "$(which zsh)"
 fi
 
-echo "Done"
-source ~/.zshrc
+echo " "
+echo "-------------------------------------------------------------------"
+echo "Done! Run 'zsh' or restart your terminal to use your new shell."
+echo "Please also install MesloLG Nerd Font Mono patched font and set it"
+echo "as your terminal font for the best experience."
+echo "at https://www.nerdfonts.com/font-downloads"
+echo "-------------------------------------------------------------------"
+echo " "
