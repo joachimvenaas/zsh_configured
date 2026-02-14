@@ -29,7 +29,7 @@ fi
 # Install dependencies
 # -------------------------------
 sudo apt update
-sudo apt install -y zsh curl git unzip fontconfig gpg wget
+sudo apt install -y zsh git unzip fontconfig gpg wget
 
 
 # install eza
@@ -61,19 +61,25 @@ rm -rf "$TMPDIR"
 # -------------------------------
 # Install Powerlevel10k theme
 # -------------------------------
-if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" ]; then
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
-    ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-  echo "Powerlevel10k installed"
+P10K_DIR="$HOME/.oh-my-zsh/custom/themes/powerlevel10k"
+if [ -d "$P10K_DIR" ]; then
+  echo "Updating Powerlevel10k..."
+  git -C "$P10K_DIR" pull --quiet
+else
+  echo "Installing Powerlevel10k..."
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$P10K_DIR"
 fi
 
 # -------------------------------
 # Install zsh-autosuggestions plugin
 # -------------------------------
-if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions" ]; then
-  git clone https://github.com/zsh-users/zsh-autosuggestions \
-    ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-  echo "zsh-autosuggestions installed"
+ZSH_AUTOSUGGESTIONS_DIR="$HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+if [ -d "$ZSH_AUTOSUGGESTIONS_DIR" ]; then
+  echo "Updating zsh-autosuggestions..."
+  git -C "$ZSH_AUTOSUGGESTIONS_DIR" pull --quiet
+else
+  echo "Installing zsh-autosuggestions..."
+  git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_AUTOSUGGESTIONS_DIR"
 fi
 
 # -------------------------------
@@ -90,6 +96,9 @@ if [ "$SHELL" != "$(which zsh)" ]; then
     echo "Changing default shell to Zsh..."
     chsh -s "$(which zsh)"
 fi
+
+# Clear zsh compile cache to ensure fresh config loading
+rm -f ~/.zcompdump* 2>/dev/null || true
 
 echo " "
 echo "-------------------------------------------------------------------"
