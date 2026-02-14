@@ -29,11 +29,29 @@ cp "$TMPDIR/zshrc" ~/.zshrc
 cp "$TMPDIR/p10k.zsh" ~/.p10k.zsh
 rm -rf "$TMPDIR"
 
+# Check if sudo exists, install if not
+if ! command -v sudo >/dev/null 2>&1; then
+  echo "sudo not found, installing..."
+  apt update && apt install -y sudo
+fi
+
 # -------------------------------
 # Install dependencies
 # -------------------------------
 sudo apt update
-sudo apt install -y zsh curl git unzip fontconfig eza
+sudo apt install -y zsh curl git unzip fontconfig gpg wget
+
+
+# install eza
+sudo mkdir -p /etc/apt/keyrings
+wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc \
+  | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+
+echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" \
+  | sudo tee /etc/apt/sources.list.d/gierens.list
+
+sudo apt update
+sudo apt install -y eza
 
 # -------------------------------
 # Install Oh My Zsh
